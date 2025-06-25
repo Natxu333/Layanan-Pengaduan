@@ -96,8 +96,14 @@
             const ticketNumber = 'TKT-' + Math.floor(100000 + Math.random() * 900000);
             const dateSent = new Date().toISOString();
 
-            // Add ticket to the list
-            tickets.push({ number: ticketNumber, date: dateSent });
+            // Collect form data
+            const name = ticketForm.name.value.trim();
+            const email = ticketForm.email.value.trim();
+            const title = ticketForm.title.value.trim();
+            const description = ticketForm.description.value.trim();
+
+            // Add ticket to the list with full details
+            tickets.push({ number: ticketNumber, date: dateSent, name, email, title, description });
 
             // Save updated tickets to localStorage
             localStorage.setItem('tickets', JSON.stringify(tickets));
