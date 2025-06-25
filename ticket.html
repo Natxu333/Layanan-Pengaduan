@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nomor Tiket - Layanan Pengaduan Kampus</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header>
+        <nav>
+            <ul class="nav-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="layanan.html">Layanan</a></li>
+                <li><a href="ticket.html" aria-current="page">Nomor Tiket</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <h1>Cek Status Nomor Tiket</h1>
+    </header>
+    <main>
+        <form id="checkTicketForm">
+            <label for="ticketNumberInput">Masukkan Nomor Tiket Anda:</label>
+            <input type="text" id="ticketNumberInput" name="ticketNumberInput" placeholder="Contoh: TKT-123456" required />
+            <button type="submit">Cek Status</button>
+        </form>
+        <div id="ticketStatus" style="margin-top: 20px;"></div>
+    </main>
+    <footer>
+        © 2025 Layanan pengaduan kampus. Dibuat oleh aidil amal.
+    </footer>
+    <script>
+        const checkTicketForm = document.getElementById('checkTicketForm');
+        const ticketStatusDiv = document.getElementById('ticketStatus');
+
+        checkTicketForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const ticketNumber = document.getElementById('ticketNumberInput').value.trim();
+            if(ticketNumber) {
+                // Since no backend, simulate status check
+                ticketStatusDiv.textContent = 'Status untuk tiket ' + ticketNumber + ': Dalam antrian.';
+            } else {
+                ticketStatusDiv.textContent = 'Mohon masukkan nomor tiket yang valid.';
+            }
+        });
+    </script>
+</body>
+</html>

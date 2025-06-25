@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Layanan - Layanan Pengaduan Kampus</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <header>
+        <nav>
+            <ul class="nav-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="layanan.html" aria-current="page">Layanan</a></li>
+                <li><a href="ticket.html">Nomor Tiket</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <h1>Layanan Pengaduan Kampus - Ticketing</h1>
+        <div id="ticketNumber" style="position: absolute; top: 15px; right: 20px; background: #004080; color: white; padding: 5px 10px; border-radius: 5px; display: none;">
+            Nomor Tiket: <span id="ticketNumValue"></span>
+        </div>
+    </header>
+
+    <main>
+        <form id="ticketForm" action="https://formspree.io/f/myzjbwad" method="post">
+            <label for="name">Nama:</label>
+            <input type="text" id="name" name="name" placeholder="Contoh: Aidil Amal" required />
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Contoh: aidil@example.com" required />
+
+            <label for="title">Judul Pengaduan:</label>
+            <input type="text" id="title" name="title" placeholder="Contoh: AC rusak" required />
+
+            <label for="description">Deskripsi Pengaduan:</label>
+            <textarea id="description" name="description" placeholder="Contoh: AC di kelas TPLP031 sering tidak dingin" required></textarea>
+
+            <button type="submit">Kirim Pengaduan</button>
+        </form>
+
+        <div id="ticketListContainer" style="margin-top: 20px;">
+            <h3>Daftar Nomor Tiket</h3>
+            <table id="ticketList" border="1" cellpadding="5" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nomor Tiket</th>
+                        <th>Tanggal Dikirim</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Ticket rows will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+
+        <section id="tickets">
+            <!-- Tickets will appear here -->
+        </section>
+    </main>
+
+    <footer>
+        © 2025 Layanan pengaduan kampus. Dibuat oleh aidil amal.
+    </footer>
+
+    <script>
+        const ticketForm = document.getElementById('ticketForm');
+        const ticketListTableBody = document.querySelector('#ticketList tbody');
+
+        let tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+
+        // Function to render tickets in the table
+        function renderTickets() {
+            ticketListTableBody.innerHTML = '';
+            tickets.forEach((ticket, index) => {
+                const row = document.createElement('tr');
+                const dateSent = new Date(ticket.date).toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' });
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${ticket.number}</td>
+                    <td>${dateSent}</td>
+                `;
+                ticketListTableBody.appendChild(row);
+            });
+        }
+
+        // On page load, render saved tickets
+        renderTickets();
+
+        ticketForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Generate a random ticket number
+            const ticketNumber = 'TKT-' + Math.floor(100000 + Math.random() * 900000);
+            const dateSent = new Date().toISOString();
+
+            // Add ticket to the list
+            tickets.push({ number: ticketNumber, date: dateSent });
+
+            // Save updated tickets to localStorage
+            localStorage.setItem('tickets', JSON.stringify(tickets));
+
+            // Render updated tickets
+            renderTickets();
+
+            // After showing ticket number, submit the form to Formspree
+            setTimeout(() => {
+                ticketForm.submit();
+            }, 2000); // 2 seconds delay to show ticket number
+        });
+    </script>
+</body>
+</html>
