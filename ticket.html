@@ -34,12 +34,34 @@
         const checkTicketForm = document.getElementById('checkTicketForm');
         const ticketStatusDiv = document.getElementById('ticketStatus');
 
+        let tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+
+        function displayTicketDetails(ticket) {
+            const dateSent = new Date(ticket.date).toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' });
+            ticketStatusDiv.innerHTML = `
+                <div style="border: 1px solid #004080; padding: 15px; border-radius: 5px; max-width: 600px;">
+                    <h3>Detail Pengaduan</h3>
+                    <p><strong>Status:</strong> sedang di tinjau<p/>
+                    <p><strong>No Tiket:</strong> ${ticket.number}</p>
+                    <p><strong>Nama:</strong> ${ticket.name}</p>
+                    <p><strong>Email:</strong> ${ticket.email}</p>
+                    <p><strong>Judul Pengaduan:</strong> ${ticket.title}</p>
+                    <p><strong>Deskripsi:</strong> ${ticket.description}</p>
+                    <p><strong>Tanggal Dikirim:</strong> ${dateSent}</p>
+                </div>
+            `;
+        }
+
         checkTicketForm.addEventListener('submit', function(e) {
             e.preventDefault();
             const ticketNumber = document.getElementById('ticketNumberInput').value.trim();
             if(ticketNumber) {
-                // Since no backend, simulate status check
-                ticketStatusDiv.textContent = 'Status untuk tiket ' + ticketNumber + ': Dalam antrian.';
+                const ticket = tickets.find(t => t.number === ticketNumber);
+                if(ticket) {
+                    displayTicketDetails(ticket);
+                } else {
+                    ticketStatusDiv.textContent = 'Nomor tiket tidak ditemukan.';
+                }
             } else {
                 ticketStatusDiv.textContent = 'Mohon masukkan nomor tiket yang valid.';
             }
